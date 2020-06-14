@@ -18,7 +18,8 @@
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      /* background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5); */
+      background: #018DED;
       background-size: cover;
       font-family: 'helvetica neue';
       text-align: center;
@@ -47,6 +48,8 @@
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
         0 0 10px rgba(0,0,0,0.2);
+      background-image: url('https://i.ya-webdesign.com/images/clock-without-hands-png-5.png');
+      background-size: contain;
     }
 
     .clock-face {
@@ -57,17 +60,64 @@
     }
 
     .hand {
-      width: 50%;
-      height: 6px;
-      background: black;
       position: absolute;
       top: 50%;
+      background: white;
+      border-radius: 10px;
+      transition: .5s;
+      transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .hour-hand {
+      width: 40%;
+      height: 6px;
+      margin-left: 10%;
+      transform-origin: 100%;
+    }
+
+    .min-hand {
+      width: 50%;
+      height: 6px;
+      transform-origin: calc(100%);
+    }
+
+    .second-hand {
+      width: calc(50% + 20px);
+      height: 2px;
+      transform-origin: calc(100% - 20px);
     }
 
   </style>
 
   <script>
+(function() {
+  const second = document.getElementsByClassName('second-hand')[0];
+  const min = document.getElementsByClassName('min-hand')[0];
+  const hour = document.getElementsByClassName('hour-hand')[0];
 
+  function rotateHandsToTime (time, sh, mh, hh) {
+    sh.style.transform = `rotate(${90 + time.getSeconds() * 6}deg)`;
+    mh.style.transform = `rotate(${90 + time.getMinutes() * 6 + (time.getSeconds() / 60) * 6}deg)`;
+    hh.style.transform = `rotate(${90 + time.getHours() * 30 + time.getMinutes() / 60 * 30}deg)`;
+  }
+
+  rotateHandsToTime(new Date(), second, min, hour);
+
+  function rotateEachSecond(s, m, h) {
+    const secAngle = +s.style.transform.match(/[0-9\.]+/)[0];
+    const minAngle = +m.style.transform.match(/[0-9\.]+/)[0];
+    const hourAngle = +h.style.transform.match(/[0-9\.]+/)[0];
+    // console.log(secAngle, minAngle, hourAngle);
+
+    s.style.transform = `rotate(${secAngle + 6}deg)`;
+    m.style.transform = `rotate(${minAngle + .1}deg)`;
+    h.style.transform = `rotate(${hourAngle + 360 / (60 * 60 * 12)}deg)`;
+  }
+
+  setInterval(() => {
+    rotateEachSecond(second, min, hour)
+  }, 1000);
+})();
 
   </script>
 </body>
