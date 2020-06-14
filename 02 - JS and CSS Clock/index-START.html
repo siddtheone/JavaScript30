@@ -48,7 +48,7 @@
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
         0 0 10px rgba(0,0,0,0.2);
-      background-image: url('https://i.ya-webdesign.com/images/clock-without-hands-png-5.png');
+      background-image: url('./clockface.jpg');
       background-size: contain;
     }
 
@@ -107,7 +107,6 @@
     const secAngle = +s.style.transform.match(/[0-9\.]+/)[0];
     const minAngle = +m.style.transform.match(/[0-9\.]+/)[0];
     const hourAngle = +h.style.transform.match(/[0-9\.]+/)[0];
-    // console.log(secAngle, minAngle, hourAngle);
 
     s.style.transform = `rotate(${secAngle + 6}deg)`;
     m.style.transform = `rotate(${minAngle + .1}deg)`;
