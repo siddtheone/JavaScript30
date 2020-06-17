@@ -15,7 +15,52 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+(function() {
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+  const list = [];
+
+  fetch(endpoint)
+      .then(res => res.json())
+      .then(res => list.push(...res));
+
+  
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function handleChange() {
+    const defaultLI = ['Filter for a city', 'or a state'];
+    const ulEle = document.querySelector('.suggestions');
+    
+    if (this.value) {
+      const regEx = new RegExp(this.value, 'i');
+      const filteredCities = list.reduce((a, {city, state, population}) => {
+        const matchedCity = city.match(regEx);
+        const matchedState = state.match(regEx);
+        
+        if(matchedCity || matchedState) {
+          const highlightedCity = matchedCity ? `${city.slice(0, matchedCity.index)}<span class="hl">${city.slice(matchedCity.index, matchedCity.index + this.value.length)}</span>${city.slice(matchedCity.index + this.value.length)}` : city;
+          const highlightedState = matchedState ? `${state.slice(0, matchedState.index)}<span class="hl">${state.slice(matchedState.index, matchedState.index + this.value.length)}</span>${state.slice(matchedState.index + this.value.length)}` : state;
+
+          a.push(`
+            <li>
+              <span>${highlightedCity}, ${highlightedState}</span>
+              <span>${numberWithCommas(population)}</span>
+            </li>`);
+        }
+        return a;
+      }, []);
+      
+      ulEle.innerHTML = filteredCities.join('');
+    } else {
+      ulEle.innerHTML = defaultLI.map(e => `<li>${e}</li>`).join('');
+    }
+  }
+  
+  document.querySelector('.search').addEventListener('input', handleChange);
+})();
 
 </script>
 </body>
