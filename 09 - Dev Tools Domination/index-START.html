@@ -18,28 +18,60 @@
     }
 
     // Regular
+    console.log('test');
 
     // Interpolated
-
+    console.log('I am %s string', '💩');
+    
     // Styled
+    console.log('%c Lorem', 'font-size: 20px;text-shadow: 3px 3px red;');
 
     // warning!
+    console.warn('Lorem');
 
     // Error :|
+    console.error('Bla');
 
     // Info
+    console.log('Make a note');
 
     // Testing
+    console.assert(1 === 2, 'This is wrong');
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.dir(document.querySelector('p'));
 
     // Grouping together
+    dogs.forEach(d => {
+      console.groupCollapsed(`${d.name}`);
+      console.log(d.name);
+      console.log(d.age);
+      console.groupEnd(`${d.name}`);
+    })
 
     // counting
+    console.count('1');
+    console.count('1');
+    console.count('1');
+    console.count('2');
+    console.count('1');
+    console.count('1');
+    console.count('1');
+    console.count('2');
+    console.count('2');
+    console.count('2');
 
     // timing
+    console.time('str one');
+    fetch('https://api.github.com/users/siddtheone')
+    .then(data => data.json())
+    .then(data => {
+      console.timeEnd('str one');
+      console.table(data);
+    })
 
   </script>
 </body>
