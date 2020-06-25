@@ -96,6 +96,22 @@
   </div>
 
 <script>
+  const inbox = document.querySelector('.inbox');
+  inbox.addEventListener('click', selectItem, {capture: true});
+  function selectItem(e) {
+    if (e.shiftKey) {
+      const a = [];
+      const inputs = this.querySelectorAll('input');
+      inputs.forEach(i => a.push(i.checked));
+      const firstChecked = a.indexOf(true);
+      const lastChecked = a.lastIndexOf(true);
+      inputs.forEach((i, index) => {
+        if (index > firstChecked && index < lastChecked) {
+          i.checked = true
+        }
+      });
+    }
+  }
 </script>
 </body>
 </html>
